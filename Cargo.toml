@@ -6,4 +6,4 @@ edition = "2018"
 license= "ISC"
 
 [dependencies]
-gotham = "0.3"
+tower-web = "0.3"
