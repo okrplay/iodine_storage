@@ -1,3 +1,4 @@
+extern crate frank_jwt;
 #[macro_use]
 extern crate tower_web;
 

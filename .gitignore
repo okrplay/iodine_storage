@@ -1,5 +1,7 @@
 /target
 **/*.rs.bk
 Cargo.lock
+.env
+/keys
 /.idea
 *.iml
