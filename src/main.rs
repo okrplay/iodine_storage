@@ -1,9 +1,11 @@
-extern crate diesel;
 extern crate dotenv;
 extern crate frank_jwt;
 #[macro_use]
+extern crate diesel;
+#[macro_use]
 extern crate tower_web;
 
+mod database;
 mod resources;
 
 use dotenv::dotenv;
