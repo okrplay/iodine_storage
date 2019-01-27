@@ -1,3 +1,4 @@
+extern crate diesel;
 extern crate dotenv;
 extern crate frank_jwt;
 #[macro_use]
