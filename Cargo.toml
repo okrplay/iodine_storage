@@ -9,4 +9,5 @@ license= "ISC"
 diesel = { version = "1.4", features = ["postgres"]}
 dotenv = "0.13"
 frank_jwt = "3.1"
+serde_json = "1.0"
 tower-web = "0.3"

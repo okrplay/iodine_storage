@@ -1,6 +1,6 @@
 #[derive(Queryable)]
 pub struct User {
-    pub id: i32,
+    pub userid: i64,
     pub username: String,
     pub fullname: String,
     pub password: String,
