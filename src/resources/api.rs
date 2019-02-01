@@ -18,11 +18,12 @@ struct CustomError {
 impl_web! {
     impl APIResource {
         #[get("/api")]
-        fn api_index(&self) -> Result<&'static str, CustomError> {
-            Ok("Welcome to the iodine_storage API!")
+        #[content_type("json")]
+        fn api_index(&self) -> Result<CustomSuccess, CustomError> {
+            Ok(CustomSuccess { message: "Welcome to the iodine_storage API!" })
         }
 
-        #[get("/authentication_check")]
+        #[get("/api/authentication_check")]
         #[content_type("json")]
         fn authentication_check(&self, authentication: String) -> Result<CustomSuccess, CustomError> {
             match auth(authentication) {
