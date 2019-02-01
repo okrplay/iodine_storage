@@ -4,31 +4,26 @@ use super::authentication::auth;
 pub struct APIResource;
 
 #[derive(Response)]
-#[web(status = "200")]
-struct CustomSuccess {
+struct CustomResponse {
     message: &'static str,
-}
-
-#[derive(Response)]
-#[web(status = "400")]
-struct CustomError {
-    message: &'static str,
+    #[web(status)]
+    status: u16,
 }
 
 impl_web! {
     impl APIResource {
         #[get("/api")]
         #[content_type("json")]
-        fn api_index(&self) -> Result<CustomSuccess, CustomError> {
-            Ok(CustomSuccess { message: "Welcome to the iodine_storage API!" })
+        fn api_index(&self) -> Result<CustomResponse, ()> {
+            Ok(CustomResponse { message: "Welcome to the iodine_storage API!", status: 200 })
         }
 
         #[get("/api/authentication_check")]
         #[content_type("json")]
-        fn authentication_check(&self, authentication: String) -> Result<CustomSuccess, CustomError> {
+        fn authentication_check(&self, authentication: String) -> Result<CustomResponse, ()> {
             match auth(authentication) {
-                Ok(_) => Ok(CustomSuccess { message: "Authentication successful" }),
-                Err(_) => Err(CustomError { message: "Error" }),
+                Ok(_) => Ok(CustomResponse { message: "Authentication successful", status: 200 }),
+                Err(_) => Ok(CustomResponse { message: "Error", status: 400 }),
             }
         }
     }
