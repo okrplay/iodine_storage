@@ -1,0 +1,1 @@
+export PATH="${PATH}:C:\Users\travis\openssl_lib\bin"
