@@ -4,5 +4,5 @@ os:
     - osx
     - windows
 dist: xenial
-before_script:
-    - sh install_openssl_win.sh
+before_install:
+    - bash ./install_openssl_win.sh
