@@ -1,8 +1,10 @@
 language: rust
-os:
-    - linux
-    - osx
-    - windows
-dist: xenial
+matrix:
+    include:
+        - os: linux
+          dist: xenial
+        - os: osx
+        - os: windows
+          env: OPENSSL_DIR=C:\Users\travis\openssl_lib
 before_install:
     - bash ./install_openssl_win.sh
