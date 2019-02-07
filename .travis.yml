@@ -10,4 +10,5 @@ matrix:
               - OPENSSL_STATIC=true
 before_install:
     - bash ./install_openssl_win.sh
-    - powershell: Win64OpenSSL-1_1_1a.exe /SILENT /VERYSILENT /SP- /DIR="C:\Users\travis\openssl_dev"
+
+powershell: Win64OpenSSL-1_1_1a.exe /SILENT /VERYSILENT /SP- /DIR="C:\Users\travis\openssl_dev"
