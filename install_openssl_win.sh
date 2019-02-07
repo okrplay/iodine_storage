@@ -1,4 +1,4 @@
 if [ "$TRAVIS_OS_NAME" == "windows" ];
 then
-    choco install openssl.light --params "/InstallDir:C:\Users\travis\openssl_dev"
+    curl -O https://slproweb.com/download/Win64OpenSSL-1_1_1a.exe
 fi
