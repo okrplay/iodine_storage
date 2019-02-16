@@ -4,8 +4,6 @@ extern crate http;
 extern crate serde;
 extern crate serde_json;
 #[macro_use]
-extern crate diesel;
-#[macro_use]
 extern crate tower_web;
 
 mod database;
