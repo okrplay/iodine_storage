@@ -1,3 +1,4 @@
+use super::super::database::database::establish_connection;
 use frank_jwt::{decode, validate_signature, Algorithm};
 use std::env;
 
@@ -12,11 +13,20 @@ pub fn auth(jwt: String) -> Result<(), ()> {
             true => match decode(&jwt, &keypath, Algorithm::RS256) {
                 Ok((_, payload)) => match payload.get("id") {
                     Some(userid_value) => match payload.get("generation") {
-                        Some(generation_value) => match userid_value.is_i64() {
+                        Some(generation_value) => match userid_value.is_string() {
                             true => match generation_value.is_string() {
                                 true => {
-                                    // TODO: check generation value
-                                    Ok(())
+                                    let conn = establish_connection();
+                                    let result = conn.find(json!({
+                                        "selector": {
+                                            "_id": userid_value.as_str().unwrap().to_string(),
+                                            "generation": generation_value.as_str().unwrap().to_string(),
+                                        }
+                                    })).unwrap();
+                                    match result.total_rows {
+                                        0 => Err(()),
+                                        _ => Ok(()),
+                                    }
                                 }
                                 false => Err(()),
                             },
