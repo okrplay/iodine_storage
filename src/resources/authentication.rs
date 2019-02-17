@@ -4,7 +4,7 @@ use frank_jwt::{decode, validate_signature, Algorithm};
 use std::env;
 
 // jwt authentication function
-pub fn auth(jwt: String) -> Result<(), ()> {
+pub fn auth(jwt: String) -> Result<&'static str, &'static str> {
     // get public key filesystem path from environment or .env
     let mut keypath = env::current_dir().unwrap();
     keypath.push(
@@ -37,23 +37,23 @@ pub fn auth(jwt: String) -> Result<(), ()> {
                                     // check amount of results
                                     match result.total_rows {
                                         // no results, the generation value is invalid
-                                        0 => Err(()),
+                                        0 => Err("GENERATION_INVALID"),
                                         // 1 (or more, probably won't happen) result, generation and jwt is completly valid
-                                        _ => Ok(()),
+                                        _ => Ok("AUTH_SUCCESS"),
                                     }
                                 }
-                                false => Err(()),
+                                false => Err("GENERATION_INVALID"),
                             },
-                            false => Err(()),
+                            false => Err("ID_INVALID"),
                         },
-                        None => Err(()),
+                        None => Err("GENERATION_MISSING"),
                     },
-                    None => Err(()),
+                    None => Err("ID_MISSING"),
                 },
-                Err(_) => Err(()),
+                Err(_) => Err("JWT_DECODE_FAILED"),
             },
-            false => Err(()),
+            false => Err("SIGNATURE_INVALID"),
         },
-        Err(_) => Err(()),
+        Err(_) => Err("SIGNATURE_INVALID"),
     }
 }

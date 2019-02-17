@@ -28,8 +28,8 @@ impl_web! {
         #[content_type("json")]
         fn authentication_check(&self, authentication: String) -> Result<CustomResponse, ()> {
             match auth(authentication) {
-                Ok(_) => Ok(CustomResponse { message: "Authentication successful", status: 200 }),
-                Err(_) => Ok(CustomResponse { message: "Error", status: 400 }),
+                Ok(msg) => Ok(CustomResponse { message: msg, status: 200 }),
+                Err(msg) => Ok(CustomResponse { message: msg, status: 400 }),
             }
         }
     }
