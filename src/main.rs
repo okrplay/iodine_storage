@@ -2,6 +2,8 @@ extern crate dotenv;
 extern crate frank_jwt;
 extern crate http;
 extern crate serde;
+extern crate sofa;
+#[macro_use]
 extern crate serde_json;
 #[macro_use]
 extern crate tower_web;
