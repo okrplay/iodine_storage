@@ -10,6 +10,7 @@ extern crate serde_json;
 extern crate tower_web;
 
 // import modules
+mod authentication;
 mod database;
 mod resources;
 

@@ -1,5 +1,5 @@
 // imports
-use super::authentication::auth;
+use super::super::authentication::authentication::auth;
 
 // resource struct
 #[derive(Clone, Debug)]
