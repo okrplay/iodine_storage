@@ -30,6 +30,7 @@ pub fn auth(jwt: String) -> Result<&'static str, &'static str> {
                                     // search for a document with matching id and generation
                                     let result = conn.find(json!({
                                         "selector": {
+                                            "kind": "user",
                                             "_id": userid_value.as_str().unwrap().to_string(),
                                             "generation": generation_value.as_str().unwrap().to_string(),
                                         }
