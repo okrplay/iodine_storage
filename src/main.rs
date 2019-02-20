@@ -15,7 +15,9 @@ mod database;
 mod resources;
 
 // imports
+use database::{connection::establish_connection, setup::check_setup};
 use dotenv::dotenv;
+use std::env;
 use tower_web::ServiceBuilder;
 
 // main loop
@@ -24,8 +26,19 @@ fn main() {
     dotenv().ok();
 
     // set server address
-    let addr = "127.0.0.1:7070".parse().expect("Invalid address");
+    let addr = env::var("iodine_url")
+        .expect("Environment variable iodine_url not set")
+        .parse()
+        .expect("Invalid address");
     println!("Listening on http://{}", addr);
+
+    // check for existing setup
+    let conn = establish_connection();
+    if check_setup(conn) {
+        println!("Iodine is already setup, starting.");
+    } else {
+        println!("Iodine is not setup, please visit {}/setup.", addr)
+    }
 
     // construct the server and kick it off
     ServiceBuilder::new()

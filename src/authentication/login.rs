@@ -10,7 +10,7 @@ pub fn get_jwt(username: String, password: String, conn: Database) -> Result<Str
     let result = conn
         .find(json!({
             "selector": {
-                "kind": "user",
+                "category": "user",
                 "username": username,
             },
         }))

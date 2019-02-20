@@ -29,7 +29,7 @@ pub fn auth(jwt: String, conn: Database) -> Result<&'static str, &'static str> {
                                         // search for a document with matching id and generation
                                         let result = conn.find(json!({
                                         "selector": {
-                                            "kind": "user",
+                                            "category": "user",
                                             "_id": userid_value.as_str().unwrap().to_string(),
                                             "generation": generation_value.as_str().unwrap().to_string(),
                                         }
@@ -38,7 +38,7 @@ pub fn auth(jwt: String, conn: Database) -> Result<&'static str, &'static str> {
                                         match result.total_rows {
                                             // no results, the generation value is invalid
                                             0 => Err("GENERATION_INVALID"),
-                                            // 1 (or more, probably won't happen) result, generation and jwt is completly valid
+                                            // 1 (or more, probably won't happen) result, generation and jwt is completely valid
                                             _ => Ok("AUTH_SUCCESS"),
                                         }
                                     } else {
