@@ -1,5 +1,6 @@
 // imports
-use super::super::authentication::{login::get_jwt, verify_token::auth};
+use super::super::authentication::{jsonwebtoken::auth, login::get_jwt};
+use super::super::database::connection::establish_connection;
 
 // resource struct
 #[derive(Clone, Debug)]
@@ -34,7 +35,8 @@ impl_web! {
         #[get("/api/authentication_check")]
         #[content_type("json")]
         fn authentication_check(&self, authentication: String) -> Result<CustomResponse, ()> {
-            match auth(authentication) {
+            let conn = establish_connection();
+            match auth(authentication, conn) {
                 Ok(msg) => Ok(CustomResponse { message: msg.to_string(), status: 200 }),
                 Err(msg) => Ok(CustomResponse { message: msg.to_string(), status: 400 }),
             }
@@ -44,7 +46,8 @@ impl_web! {
         #[post("/api/login")]
         #[content_type("json")]
         fn login(&self, body: LoginUser) -> Result<CustomResponse, ()> {
-            match get_jwt(body.username, body.password) {
+            let conn = establish_connection();
+            match get_jwt(body.username, body.password, conn) {
                 Ok(jwt) => Ok(CustomResponse { message: jwt, status: 200 }),
                 Err(msg) => Ok(CustomResponse { message: msg.to_string(), status: 400 }),
             }

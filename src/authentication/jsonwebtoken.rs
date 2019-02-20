@@ -1,10 +1,10 @@
 // imports
-use super::super::database::connection::establish_connection;
 use frank_jwt::{decode, validate_signature, Algorithm};
+use sofa::Database;
 use std::env;
 
 // jwt authentication function
-pub fn auth(jwt: String) -> Result<&'static str, &'static str> {
+pub fn auth(jwt: String, conn: Database) -> Result<&'static str, &'static str> {
     // get public key filesystem path from environment or .env
     let mut keypath = env::current_dir().unwrap();
     keypath.push(
@@ -26,8 +26,6 @@ pub fn auth(jwt: String) -> Result<&'static str, &'static str> {
                                 if userid_value.is_string() {
                                     // check if generation is actually a string
                                     if generation_value.is_string() {
-                                        // get couchdb connection + database
-                                        let conn = establish_connection();
                                         // search for a document with matching id and generation
                                         let result = conn.find(json!({
                                         "selector": {

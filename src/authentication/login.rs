@@ -1,13 +1,11 @@
 // imports
-use super::super::database::connection::establish_connection;
 use bcrypt::verify;
 use frank_jwt::{encode, Algorithm};
+use sofa::Database;
 use std::env;
 
 // jwt generation function
-pub fn get_jwt(username: String, password: String) -> Result<String, &'static str> {
-    // establish connection
-    let conn = establish_connection();
+pub fn get_jwt(username: String, password: String, conn: Database) -> Result<String, &'static str> {
     // search for user in database
     let result = conn
         .find(json!({
