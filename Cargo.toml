@@ -1,6 +1,6 @@
 [package]
 name = "iodine_storage"
-version = "0.0.22"
+version = "0.0.23"
 authors = ["okrplay <32576280+okrplay@users.noreply.github.com>"]
 edition = "2018"
 license= "ISC"

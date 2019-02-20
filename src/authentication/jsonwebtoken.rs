@@ -1,10 +1,11 @@
 // imports
+use super::enums::AuthReponse::{self, *};
 use frank_jwt::{decode, validate_signature, Algorithm};
 use sofa::Database;
 use std::env;
 
 // jwt authentication function
-pub fn auth(jwt: String, conn: Database) -> Result<&'static str, &'static str> {
+pub fn auth(jwt: String, conn: Database) -> Result<AuthReponse, AuthReponse> {
     // get public key filesystem path from environment or .env
     let mut keypath = env::current_dir().unwrap();
     keypath.push(
@@ -37,27 +38,27 @@ pub fn auth(jwt: String, conn: Database) -> Result<&'static str, &'static str> {
                                         // check amount of results
                                         match result.total_rows {
                                             // no results, the generation value is invalid
-                                            0 => Err("GENERATION_INVALID"),
+                                            0 => Err(GenerationInvalid),
                                             // 1 (or more, probably won't happen) result, generation and jwt is completely valid
-                                            _ => Ok("AUTH_SUCCESS"),
+                                            _ => Ok(Success("usergroup".to_string())),
                                         }
                                     } else {
-                                        Err("GENERATION_INVALID")
+                                        Err(GenerationInvalid)
                                     }
                                 } else {
-                                    Err("ID_INVALID")
+                                    Err(IdInvalid)
                                 }
                             }
-                            None => Err("GENERATION_MISSING"),
+                            None => Err(GenerationMissing),
                         },
-                        None => Err("ID_MISSING"),
+                        None => Err(IdMissing),
                     },
-                    Err(_) => Err("JWT_DECODE_FAILED"),
+                    Err(_) => Err(JwtDecodeFailure),
                 }
             } else {
-                Err("SIGNATURE_INVALID")
+                Err(SignatureInvalid)
             }
         }
-        Err(_) => Err("SIGNATURE_INVALID"),
+        Err(_) => Err(SignatureInvalid),
     }
 }
