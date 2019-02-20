@@ -1,15 +1,24 @@
 // imports
 use super::super::authentication::{jsonwebtoken::auth, login::get_jwt};
 use super::super::database::connection::establish_connection;
+use crate::authentication::enums::AuthResponseEnum;
 
 // resource struct
 #[derive(Clone, Debug)]
 pub struct APIResource;
 
-// custom response for success and failure
+// generic custom response for success and failure
 #[derive(Response)]
 struct CustomResponse {
     message: String,
+    #[web(status)]
+    status: u16,
+}
+
+// custom response for the auth function
+#[derive(Response)]
+struct AuthResponse {
+    code: AuthResponseEnum,
     #[web(status)]
     status: u16,
 }
@@ -32,13 +41,13 @@ impl_web! {
         }
 
         // endpoint to check if authentication with jwt is working
-        #[get("/api/authentication_check")]
+        #[get("/api/auth")]
         #[content_type("json")]
-        fn authentication_check(&self, authentication: String) -> Result<CustomResponse, ()> {
+        fn authentication_check(&self, authentication: String) -> Result<AuthResponse, ()> {
             let conn = establish_connection();
             match auth(authentication, conn) {
-                Ok(msg) => Ok(CustomResponse { message: msg.to_string(), status: 200 }),
-                Err(msg) => Ok(CustomResponse { message: msg.to_string(), status: 400 }),
+                Ok(response) => Ok(AuthResponse { code: response, status: 200 }),
+                Err(response) => Ok(AuthResponse { code: response, status: 400 }),
             }
         }
 
