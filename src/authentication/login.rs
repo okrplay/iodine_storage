@@ -1,11 +1,14 @@
 // imports
-use super::super::database::database::establish_connection;
+use super::super::database::connection::establish_connection;
 use bcrypt::verify;
 use frank_jwt::{encode, Algorithm};
 use std::env;
 
+// jwt generation function
 pub fn get_jwt(username: String, password: String) -> Result<String, &'static str> {
+    // establish connection
     let conn = establish_connection();
+    // search for user in database
     let result = conn
         .find(json!({
             "selector": {
@@ -14,21 +17,28 @@ pub fn get_jwt(username: String, password: String) -> Result<String, &'static st
             },
         }))
         .unwrap();
+    // check if user was found
     match result.total_rows {
+        // no user found
         0 => Err("USER_INVALID"),
+        // user found
         _ => {
+            // get password from result
             let user_value = &result.get_data()[0];
             let hashed_password = user_value.get("password").unwrap().as_str().unwrap();
+            // verify password
             match verify(password, hashed_password) {
-                Ok(status) => match status {
-                    true => {
-                        let mut header = json!({});
+                Ok(status) => {
+                    // verify if password is correct
+                    if status {
+                        // generate jwt and return it
+                        let header = json!({});
                         let mut keypath = env::current_dir().unwrap();
                         keypath.push(
                             env::var("iodine_private_key")
                                 .expect("Environment variable iodine_private_key not set"),
                         );
-                        let mut payload = json!({
+                        let payload = json!({
                             "username": user_value.get("username").unwrap().as_str().unwrap(),
                             "id": user_value.get("_id").unwrap().as_str().unwrap(),
                             "generation": user_value.get("generation").unwrap().as_str().unwrap(),
@@ -37,9 +47,10 @@ pub fn get_jwt(username: String, password: String) -> Result<String, &'static st
                             Ok(jwt) => Ok(jwt),
                             Err(_) => Err("INTERNAL_ERROR"),
                         }
+                    } else {
+                        Err("PASSWORD_INVALID")
                     }
-                    false => Err("PASSWORD_INVALID"),
-                },
+                }
                 Err(_) => Err("PASSWORD_INVALID"),
             }
         }

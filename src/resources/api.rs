@@ -1,6 +1,5 @@
 // imports
-use super::super::authentication::{authentication::auth, login::get_jwt};
-use serde_json::Value;
+use super::super::authentication::{login::get_jwt, verify_token::auth};
 
 // resource struct
 #[derive(Clone, Debug)]
@@ -14,6 +13,7 @@ struct CustomResponse {
     status: u16,
 }
 
+// struct used in login route
 #[derive(Extract)]
 struct LoginUser {
     username: String,
@@ -40,6 +40,7 @@ impl_web! {
             }
         }
 
+        // login endpoint
         #[post("/api/login")]
         #[content_type("json")]
         fn login(&self, body: LoginUser) -> Result<CustomResponse, ()> {

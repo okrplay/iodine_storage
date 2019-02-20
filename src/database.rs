@@ -1,2 +1,2 @@
 // database modules
-pub mod database;
+pub mod connection;
