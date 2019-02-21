@@ -1,11 +1,16 @@
 // imports
+use super::super::responses::enums::ResponseEnum::{self, *};
 use bcrypt::verify;
 use frank_jwt::{encode, Algorithm};
 use sofa::Database;
 use std::env;
 
 // jwt generation function
-pub fn get_jwt(username: String, password: String, conn: Database) -> Result<String, &'static str> {
+pub fn get_jwt(
+    username: String,
+    password: String,
+    conn: Database,
+) -> Result<ResponseEnum, ResponseEnum> {
     // search for user in database
     let result = conn
         .find(json!({
@@ -18,7 +23,7 @@ pub fn get_jwt(username: String, password: String, conn: Database) -> Result<Str
     // check if user was found
     match result.total_rows {
         // no user found
-        0 => Err("USER_INVALID"),
+        0 => Err(UserInvalid),
         // user found
         _ => {
             // get password from result
@@ -42,14 +47,14 @@ pub fn get_jwt(username: String, password: String, conn: Database) -> Result<Str
                             "generation": user_value.get("generation").unwrap().as_str().unwrap(),
                         });
                         match encode(header, &keypath, &payload, Algorithm::RS256) {
-                            Ok(jwt) => Ok(jwt),
-                            Err(_) => Err("INTERNAL_ERROR"),
+                            Ok(jwt) => Ok(Success(jwt)),
+                            Err(_) => Err(InternalError),
                         }
                     } else {
-                        Err("PASSWORD_INVALID")
+                        Err(PasswordInvalid)
                     }
                 }
-                Err(_) => Err("PASSWORD_INVALID"),
+                Err(_) => Err(PasswordInvalid),
             }
         }
     }

@@ -1,13 +1,13 @@
 // imports
 use super::super::authentication::{jsonwebtoken::auth, login::get_jwt};
 use super::super::database::connection::establish_connection;
-use crate::authentication::enums::AuthResponseEnum;
+use super::super::responses::enums::ResponseEnum;
 
 // resource struct
 #[derive(Clone, Debug)]
 pub struct APIResource;
 
-// generic custom response for success and failure
+// generic response for success and failure
 #[derive(Response)]
 struct CustomResponse {
     message: String,
@@ -15,10 +15,10 @@ struct CustomResponse {
     status: u16,
 }
 
-// custom response for the auth function
+// generic response for routes with enums
 #[derive(Response)]
-struct AuthResponse {
-    code: AuthResponseEnum,
+struct EnumResponse {
+    code: ResponseEnum,
     #[web(status)]
     status: u16,
 }
@@ -43,22 +43,22 @@ impl_web! {
         // endpoint to check if authentication with jwt is working
         #[get("/api/auth")]
         #[content_type("json")]
-        fn authentication_check(&self, authentication: String) -> Result<AuthResponse, ()> {
+        fn authentication_check(&self, authentication: String) -> Result<EnumResponse, ()> {
             let conn = establish_connection();
             match auth(authentication, conn) {
-                Ok(response) => Ok(AuthResponse { code: response, status: 200 }),
-                Err(response) => Ok(AuthResponse { code: response, status: 400 }),
+                Ok(response) => Ok(EnumResponse { code: response, status: 200 }),
+                Err(response) => Ok(EnumResponse { code: response, status: 400 }),
             }
         }
 
         // login endpoint
         #[post("/api/login")]
         #[content_type("json")]
-        fn login(&self, body: LoginUser) -> Result<CustomResponse, ()> {
+        fn login(&self, body: LoginUser) -> Result<EnumResponse, ()> {
             let conn = establish_connection();
             match get_jwt(body.username, body.password, conn) {
-                Ok(jwt) => Ok(CustomResponse { message: jwt, status: 200 }),
-                Err(msg) => Ok(CustomResponse { message: msg.to_string(), status: 400 }),
+                Ok(response) => Ok(EnumResponse { code: response, status: 200 }),
+                Err(response) => Ok(EnumResponse { code: response, status: 400 }),
             }
         }
     }

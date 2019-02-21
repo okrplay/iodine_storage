@@ -13,6 +13,7 @@ extern crate tower_web;
 mod authentication;
 mod database;
 mod resources;
+mod responses;
 
 // imports
 use database::{connection::establish_connection, setup::check_setup};

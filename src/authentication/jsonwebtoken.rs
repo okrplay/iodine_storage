@@ -1,11 +1,11 @@
 // imports
-use super::enums::AuthResponseEnum::{self, *};
+use super::super::responses::enums::ResponseEnum::{self, *};
 use frank_jwt::{decode, validate_signature, Algorithm};
 use sofa::Database;
 use std::env;
 
 // jwt authentication function
-pub fn auth(jwt: String, conn: Database) -> Result<AuthResponseEnum, AuthResponseEnum> {
+pub fn auth(jwt: String, conn: Database) -> Result<ResponseEnum, ResponseEnum> {
     // get public key filesystem path from environment or .env
     let mut keypath = env::current_dir().unwrap();
     keypath.push(
