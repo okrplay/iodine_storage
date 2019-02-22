@@ -40,7 +40,7 @@ pub fn auth(jwt: String, conn: Database) -> Result<ResponseEnum, ResponseEnum> {
                                             // no results, the generation value is invalid
                                             0 => Err(GenerationInvalid),
                                             // 1 (or more, probably won't happen) result, generation and jwt is completely valid
-                                            _ => Ok(Success("usergroup".to_string())),
+                                            _ => Ok(Success(None)),
                                         }
                                     } else {
                                         Err(GenerationInvalid)

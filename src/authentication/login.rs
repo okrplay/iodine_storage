@@ -47,7 +47,7 @@ pub fn get_jwt(
                             "generation": user_value.get("generation").unwrap().as_str().unwrap(),
                         });
                         match encode(header, &keypath, &payload, Algorithm::RS256) {
-                            Ok(jwt) => Ok(Success(jwt)),
+                            Ok(jwt) => Ok(Success(Some(jwt))),
                             Err(_) => Err(InternalError),
                         }
                     } else {
