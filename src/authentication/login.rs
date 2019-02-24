@@ -45,6 +45,7 @@ pub fn get_jwt(
                             "username": user_value.get("username").unwrap().as_str().unwrap(),
                             "id": user_value.get("_id").unwrap().as_str().unwrap(),
                             "generation": user_value.get("generation").unwrap().as_str().unwrap(),
+                            "group": user_value.get("group").unwrap().as_str().unwrap(),
                         });
                         match encode(header, &keypath, &payload, Algorithm::RS256) {
                             Ok(jwt) => Ok(Success(Some(jwt))),
