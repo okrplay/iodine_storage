@@ -1,5 +1,5 @@
 // imports
-use super::super::authentication::{jsonwebtoken::auth, login::get_jwt};
+use super::super::authentication::{jsonwebtoken::auth, login::login, register::register};
 use super::super::database::connection::establish_connection;
 use super::super::responses::enums::ResponseEnum;
 
@@ -30,6 +30,14 @@ struct LoginUser {
     password: String,
 }
 
+// struct used in register route
+#[derive(Extract)]
+struct RegisterUser {
+    username: String,
+    password: String,
+    invite: Option<String>,
+}
+
 // macro to implement resources
 impl_web! {
     impl APIResource {
@@ -54,11 +62,22 @@ impl_web! {
         // login endpoint
         #[post("/api/login")]
         #[content_type("json")]
-        fn login(&self, body: LoginUser) -> Result<EnumResponse, ()> {
+        fn login_route(&self, body: LoginUser) -> Result<EnumResponse, ()> {
             let conn = establish_connection();
-            match get_jwt(body.username, body.password, conn) {
+            match login(body.username, body.password, conn) {
                 Ok(response) => Ok(EnumResponse { code: response, status: 200 }),
                 Err(response) => Ok(EnumResponse { code: response, status: 400 }),
+            }
+        }
+
+        // register endpoint
+        #[post("/api/register")]
+        #[content_type("json")]
+        fn register_route(&self, body: RegisterUser) -> Result<EnumResponse, ()> {
+            let conn = establish_connection();
+            match register(body.username, body.password, body.invite, conn) {
+                Ok(response) => Ok(EnumResponse { code: response, status: 200 }),
+                Err(response) => Ok(EnumResponse{ code: response, status: 400 }),
             }
         }
     }

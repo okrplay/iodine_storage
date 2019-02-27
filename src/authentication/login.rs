@@ -6,7 +6,7 @@ use sofa::Database;
 use std::env;
 
 // jwt generation function
-pub fn get_jwt(
+pub fn login(
     username: String,
     password: String,
     conn: Database,

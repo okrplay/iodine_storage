@@ -7,6 +7,7 @@ pub enum ResponseEnum {
     IdInvalid,
     IdMissing,
     InviteInvalid,
+    InviteMissing,
     InternalError,
     JwtDecodeFailure,
     PasswordInvalid,

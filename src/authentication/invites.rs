@@ -29,3 +29,26 @@ pub fn check(invite: String, conn: Database) -> Result<ResponseEnum, ResponseEnu
         }
     }
 }
+
+// check if invite codes are enabled function
+pub fn enabled(conn: Database) -> bool {
+    // search for the setting
+    let result = conn
+        .find(json!({
+            "selector": {
+                "category": "system_setting",
+                "setting": "invites_enabled",
+            }
+        }))
+        .unwrap();
+    match result.total_rows {
+        // settings does not exist, we will just assume invites are off
+        0 => false,
+        // settings does exist, we will check the value now
+        _ => {
+            // get value from result
+            let setting_value = &result.get_data()[0];
+            setting_value.get("value").unwrap().as_bool().unwrap()
+        }
+    }
+}
