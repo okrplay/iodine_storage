@@ -1,6 +1,6 @@
 [package]
 name = "iodine_storage"
-version = "0.0.27"
+version = "0.0.28"
 authors = ["okrplay <32576280+okrplay@users.noreply.github.com>"]
 edition = "2018"
 license= "ISC"
@@ -10,6 +10,7 @@ bcrypt = "0.3"
 dotenv = "0.13"
 frank_jwt = "3.1"
 http = "0.1"
+s4 = "0.0"
 serde = "1.0"
 serde_json = "1.0"
 sofa = { git = "https://github.com/danieleades/sofa.git", rev = "11922d9e4acf94f63d762a57f631aa2888446d0f" }
