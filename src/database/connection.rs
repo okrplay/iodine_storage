@@ -4,7 +4,7 @@ use std::env;
 
 // function to establish couchdb connection and get a database
 pub fn establish_connection() -> Database {
-    // crate the couchdb client
+    // create the couchdb client
     let client = Client::new(
         env::var("iodine_database_url").expect("Environment variable iodine_database_url not set"),
     )

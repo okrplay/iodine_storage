@@ -1,6 +1,9 @@
+// imports
 use sofa::Database;
 
+// check setup function
 pub fn check_setup(conn: Database) -> bool {
+    // checks if there are settings available in the database
     let result = conn
         .find(json!({
             "selector": {

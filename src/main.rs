@@ -2,6 +2,8 @@
 extern crate dotenv;
 extern crate frank_jwt;
 extern crate http;
+extern crate rusoto_core;
+extern crate rusoto_s3;
 extern crate serde;
 extern crate sofa;
 #[macro_use]
@@ -14,6 +16,7 @@ mod authentication;
 mod database;
 mod resources;
 mod responses;
+mod s3;
 
 // imports
 use database::{connection::establish_connection, setup::check_setup};
