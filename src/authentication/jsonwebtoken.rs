@@ -1,3 +1,4 @@
+/*
 // imports
 use super::super::responses::enums::ResponseEnum::{self, *};
 use frank_jwt::{decode, validate_signature, Algorithm};
@@ -62,3 +63,4 @@ pub fn auth(jwt: String, conn: Database) -> Result<ResponseEnum, ResponseEnum> {
         Err(_) => Err(SignatureInvalid),
     }
 }
+*/

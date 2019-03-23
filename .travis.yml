@@ -5,8 +5,3 @@ matrix:
           dist: xenial
         - os: osx
         - os: windows
-          env:
-              - OPENSSL_DIR=C:/Users/travis/openssl_dev
-              - OPENSSL_STATIC=true
-before_install:
-    - bash ./install_openssl_win.sh

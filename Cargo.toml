@@ -1,6 +1,6 @@
 [package]
 name = "iodine_storage"
-version = "0.0.29"
+version = "0.0.30"
 authors = ["okrplay <32576280+okrplay@users.noreply.github.com>"]
 edition = "2018"
 license= "ISC"
@@ -8,7 +8,7 @@ license= "ISC"
 [dependencies]
 bcrypt = "0.3"
 dotenv = "0.13"
-frank_jwt = "3.1"
+biscuit = "0.2"
 http = "0.1"
 rusoto_core = "0.36"
 rusoto_s3 = "0.36"

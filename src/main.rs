@@ -1,6 +1,6 @@
 // import crates
+extern crate biscuit;
 extern crate dotenv;
-extern crate frank_jwt;
 extern crate http;
 extern crate rusoto_core;
 extern crate rusoto_s3;
