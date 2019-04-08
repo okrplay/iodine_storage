@@ -1,5 +1,5 @@
 // imports
-use super::super::authentication::{login::login, register::register};
+use super::super::authentication::{jsonwebtoken::auth, login::login, register::register};
 use super::super::database::connection::establish_connection;
 use super::super::responses::enums::ResponseEnum;
 
@@ -49,7 +49,7 @@ impl_web! {
         }
 
         // endpoint to check if authentication with jwt is working
-        /*#[get("/api/auth")]
+        #[get("/api/auth")]
         #[content_type("json")]
         fn authentication_check(&self, authentication: String) -> Result<EnumResponse, ()> {
             let conn = establish_connection();
@@ -57,7 +57,7 @@ impl_web! {
                 Ok(response) => Ok(EnumResponse { code: response, status: 200 }),
                 Err(response) => Ok(EnumResponse { code: response, status: 400 }),
             }
-        }*/
+        }
 
         // login endpoint
         #[post("/api/login")]
