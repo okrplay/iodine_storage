@@ -2,15 +2,11 @@
 #[derive(Serialize)]
 pub enum ResponseEnum {
     Success(Option<String>),
-    GenerationInvalid,
-    GenerationMissing,
-    IdInvalid,
-    IdMissing,
     InviteInvalid,
     InviteMissing,
     InternalError,
     JwtDecodeFailure,
+    JwtInvalid,
     PasswordInvalid,
-    SignatureInvalid,
     UserInvalid,
 }
